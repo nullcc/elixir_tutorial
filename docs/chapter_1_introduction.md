@@ -68,7 +68,7 @@ Hello world from Elixir
 
 在学习本入门教程时，遇到问题是很正常的事情，毕竟提问题就是学习过程的一部分！这里有很多你可以通过提问来进一步学习Elixir的地方：
 
-* <a href="irc://irc.freenode.net/elixir-lang">elixir-lang on freenode IRC</a>
+* [elixir-lang on freenode IRC][irc://irc.freenode.net/elixir-lang]
 * [Elixir on Slack](https://elixir-slackin.herokuapp.com/)
 * [Elixir Forum](http://elixirforum.com/)
 * [elixir tag on StackOverflow](https://stackoverflow.com/questions/tagged/elixir)
