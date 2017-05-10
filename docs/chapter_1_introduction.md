@@ -19,15 +19,13 @@ Erlang - 版本号>=18.0
 
 ## 安装
 
-如果你还没安装Elixir，请到[安装页面](http://elixir-lang.org/install.html)。一旦完成安装，可以运行 elixir --version 来查看Elixir的当前版本号。
+如果你还没安装Elixir，请到[安装页面](http://elixir-lang.org/install.html)。一旦完成安装，可以运行 `elixir --version` 来查看Elixir的当前版本号。
 
 ## 交互模式
 
 当安装了Elixir后，你将获得三个可执行程序：iex、elixir和elixirc。如果你从源码编译Elixir或者使用一个打包的版本，你可以在bin目录下找到这三个程序。
 
 现在，让我们从运行iex(Windows下是iex.bat)开始接触Elixir交互模式，我们可以在其中键入任何Elixir表达式来获取相应的结果。来我们来看几个基本的表达式练练手。
-
-Open up iex and type the following expressions:
 
 打开iex，输入以下表达式：
 
@@ -41,7 +39,7 @@ iex(2)> "hello" <> " world"
 "hello world"
 ```
 
-请注意一些细节，比如版本号可能和你在你的机器上显示有些许不同，这并无大碍。从现在开始我们在iex中只需要关注代码。需要离开iex可以键入Ctrl+C两次。
+请注意一些细节，比如版本号可能和你在你的机器上显示有些许不同，这并无大碍。从现在开始我们在iex中只需要关注代码。需要离开iex可以键入`Ctrl+C`两次。
 
 看来我们已经准备好继续往前了！在下一章中，我们会比较多地使用到Elixir的交互模式来熟悉这门语言的构造和基本使用方式。
 
@@ -66,9 +64,9 @@ Hello world from Elixir
 
 ## 提问
 
-在学习本入门教程时，遇到问题是很正常的事情，毕竟提问题就是学习过程的一部分！这里有很多你可以通过提问来进一步学习Elixir的地方：
+在学习本入门教程时，遇到问题是很正常的事情，毕竟提问题也是学习过程的一部分！这里有很多你可以通过提问来进一步学习Elixir的地方：
 
-* `[elixir-lang on freenode IRC][irc://irc.freenode.net/elixir-lang]`
+* [elixir-lang on freenode IRC](irc://irc.freenode.net/elixir-lang)
 * [Elixir on Slack](https://elixir-slackin.herokuapp.com/)
 * [Elixir Forum](http://elixirforum.com/)
 * [elixir tag on StackOverflow](https://stackoverflow.com/questions/tagged/elixir)
