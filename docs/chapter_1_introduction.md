@@ -23,7 +23,7 @@ Erlang - 版本号>=18.0
 
 ## 交互模式
 
-当安装了Elixir后，你将获得三个可执行程序：iex、elixir和elixirc。如果你从源码编译Elixir或者使用一个打包的版本，你可以在bin目录下找到这三个程序。
+当安装了Elixir后，你将获得三个可执行程序：`iex`、`elixir`和`elixirc`。如果你从源码编译Elixir或者使用一个打包的版本，你可以在`bin`目录下找到这三个程序。
 
 现在，让我们从运行iex(Windows下是iex.bat)开始接触Elixir交互模式，我们可以在其中键入任何Elixir表达式来获取相应的结果。来我们来看几个基本的表达式练练手。
 
@@ -60,7 +60,7 @@ $ elixir simple.exs
 Hello world from Elixir
 ```
 
-之后我们会学习如何编译Elixir代码(在第八章中)和如何使用Mix构建工具(在Mix和OPT指南中)。现在，让我们开始学习第二章。
+之后我们会学习如何编译Elixir代码(在第八章中)和如何使用`Mix`构建工具(在Mix和OPT指南中)。现在，让我们开始学习第二章。
 
 ## 提问
 
