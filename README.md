@@ -1,4 +1,6 @@
-# elixir tutorial中文版
+# Elixir tutorial中文版
+
+[Elixir官方入门教程翻译](http://elixir-lang.org/getting-started/introduction.html)
 
 1. 第一章 Elixir 简介
 2. 第二章 基本类型
@@ -9,3 +11,4 @@
 7. 第七章 关键字和映射
 8. 第八章 模块和函数
 9. 第九章 递归
+10. 第十章 可迭代对象和流
