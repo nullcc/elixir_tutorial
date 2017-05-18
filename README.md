@@ -2,7 +2,7 @@
 
 [Elixir官方入门教程](http://elixir-lang.org/getting-started/introduction.html)翻译
 
-1. 第一章 Elixir 简介
+1. [第一章 Elixir 简介](./docs/chapter_1_introduction.md)
 2. 第二章 基本类型
 3. 第三章 基本操作符
 4. 第四章 模式匹配
