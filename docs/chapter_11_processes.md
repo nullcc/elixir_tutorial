@@ -230,6 +230,4 @@ iex> Agent.get(pid, fn map -> Map.get(map, :hello) end)
 
 可以给`Agent.start_link/2`函数提供一个`:name`选项来自动注册名字。除了代理以外，Elixir还提供了一个API来构建通用服务器（被称为`GenServer`）、任务和其他很多抽象，这些抽象底层都由进程驱动。和监控树由关的知识将在《Mix和OTP指南》中进行介绍，这个指南中介绍了如何从零开始构建一个完整的Elixir应用程序。
 
-For now, let’s move on and explore the world of I/O in Elixir.
-
 下一章将讨论Elixir输入/输出的知识。
