@@ -14,3 +14,4 @@
 10. [第十章 可枚举和流](./docs/chapter_10_enumerables_and_streams.md)
 11. [第十一章 进程](./docs/chapter_11_processes.md)
 12. [第十二章 I/O和文件系统](./docs/chapter_12_io_and_the_file_system.md)
+13. [第十三章 alias，require和import](./docs/chapter_13_alias_require_and_import.md)
