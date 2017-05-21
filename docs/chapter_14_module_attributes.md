@@ -2,7 +2,7 @@
 
 1.作为注释
 2.作为常量
-3，作为临时存储
+3.作为临时存储
 
 Elixir的模块属性有三个作用：
 
@@ -73,21 +73,29 @@ iex> h Math.sum # Access the docs for the sum function
 
 ## 作为常量
 
-Elixir developers will often use module attributes as constants:
+Elixir开发者会经常把模块属性作为常量使用：
 
+```elixir
 defmodule MyServer do
   @initial_state %{host: "127.0.0.1", port: 3456}
   IO.inspect @initial_state
 end
-Note: Unlike Erlang, user defined attributes are not stored in the module by default. The value exists only during compilation time. A developer can configure an attribute to behave closer to Erlang by calling Module.register_attribute/3.
-Trying to access an attribute that was not defined will print a warning:
+```
 
+> 注意：和Erlang不同，用户自定义的属性默认不会被存储在模块中。这些属性的值只在编译期间存在。开发者可以调用`Module.register_attribute/3`来让属性的行为和Erlang相似。
+
+尝试访问一个未定义的属性会导致系统打印一个警告：
+
+```elixir
 defmodule MyServer do
   @unknown
 end
 warning: undefined module attribute @unknown, please remove access to @unknown or explicitly set it before access
-Finally, attributes can also be read inside functions:
+```
 
+最后，属性还能在函数内部被读取到：
+
+```elixir
 defmodule MyServer do
   @my_data 14
   def first_data, do: @my_data
@@ -97,14 +105,17 @@ end
 
 MyServer.first_data #=> 14
 MyServer.second_data #=> 13
-Every time an attribute is read inside a function, a snapshot of its current value is taken. In other words, the value is read at compilation time and not at runtime. As we are going to see, this also makes attributes useful to be used as storage during module compilation.
+```
 
-As temporary storage
+每当在函数内部读取一个属性时，会对这个属性做一个快照。换句话说，属性的值是在编译期被读取的而不是在运行时。正如我们接下来要看到的，这种性质使得可以将模块属性作为编译期存储。
 
-One of the projects in the Elixir organization is the Plug project, which is meant to be a common foundation for building web libraries and frameworks in Elixir.
+## 作为临时存储
 
-The Plug library also allows developers to define their own plugs which can be run in a web server:
+Elixir生态圈中有一些[插件项目](https://github.com/elixir-lang/plug)，插件是Elixir中一种构建web函数库和框架的常用方式。
 
+插件库还允许开发者定义他们自己的插件，这些插件可以运行在一个尾web服务器上：
+
+```elixir
 defmodule MyPlug do
   use Plug.Builder
 
@@ -122,12 +133,15 @@ end
 
 IO.puts "Running MyPlug with Cowboy on http://localhost:4000"
 Plug.Adapters.Cowboy.http MyPlug, []
-In the example above, we have used the plug/1 macro to connect functions that will be invoked when there is a web request. Internally, every time you call plug/1, the Plug library stores the given argument in a @plugs attribute. Just before the module is compiled, Plug runs a callback that defines a function (call/2) which handles HTTP requests. This function will run all plugs inside @plugs in order.
+```
 
-In order to understand the underlying code, we’d need macros, so we will revisit this pattern in the meta-programming guide. However the focus here is on how using module attributes as storage allows developers to create DSLs.
+上面例子中，我们使用`plug/1`宏来连接当一个web请求到来时需要调用的函数。在内部，每次你调用`plug/1`，插件库会把给定的参数存储在`@plugs`属性中。在模块被编译前，插件会运行一个回调函数，该函数定义了处理HTTP请求的函数(`call/2`)。这个函数会在`@plugs`中按顺序运行所有插件。
 
-Another example comes from the ExUnit framework which uses module attributes as annotation and storage:
+为了理解底层代码是如何运行的，我们需要宏，所以我们将在元编程指南中重新讨论这种模式。然而， 这里的重点是如何把模块属性作为存储来让开发者创建领域专属语言。
 
+另一个例子来自[ExUnit框架](https://hexdocs.pm/ex_unit/)，它把模块属性当作注释和存储来使用：
+
+```elixir
 defmodule MyTest do
   use ExUnit.Case
 
@@ -136,8 +150,10 @@ defmodule MyTest do
     # ...
   end
 end
-Tags in ExUnit are used to annotate tests. Tags can be later used to filter tests. For example, you can avoid running external tests on your machine because they are slow and dependent on other services, while they can still be enabled in your build system.
+```
 
-We hope this section shines some light on how Elixir supports meta-programming and how module attributes play an important role when doing so.
+ExUnit中的标签用来对测试用例进行注释。稍后会看到标签可以用于筛选测试用例。比如，虽然你可以在你的构建机器上运行外部测试用例子，但你可以选择不在你的机器上运行它们，因为外部测试用例运行起来很慢而且依赖于其他服务，
 
-In the next chapters we’ll explore structs and protocols before moving to exception handling and other constructs like sigils and comprehensions.
+我们希望通过本节让你了解Elixir如何支持元编程，并且知道模块属性在其中的作用非常重要。
+
+在接下来的章节中，我们在将探索异常处理和其他构建结构比如符号和解析之前讨论结构和协议。
