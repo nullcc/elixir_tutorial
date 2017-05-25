@@ -19,4 +19,4 @@
 15. [第十五章 结构体](./docs/chapter_15_structs.md)
 16. [第十六章 协议](./docs/chapter_16_protocols.md)
 17. [第十七章 解析](./docs/chapter_17_comprehensions.md)
-18. [第十八章 符号](./docs/chapter_18_sigils.md)
+18. [第十八章 Sigils](./docs/chapter_18_sigils.md)
