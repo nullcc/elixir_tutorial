@@ -130,31 +130,38 @@ iex> Enum.find -50..50, &(rem(&1, 13) == 0)
 
 ## Exits
 
-All Elixir code runs inside processes that communicate with each other. When a process dies of “natural causes” (e.g., unhandled exceptions), it sends an exit signal. A process can also die by explicitly sending an exit signal:
+所有的Elixir代码都运行在相互通信的进程内。当一个进程因为“自然原因”结束（比如一个未处理的异常），它会发送一个`exit`信号。一个进程可以因为明确地发送一个`exit`信号而结束：
 
+```elixir
 iex> spawn_link fn -> exit(1) end
 #PID<0.56.0>
 ** (EXIT from #PID<0.56.0>) 1
-In the example above, the linked process died by sending an exit signal with value of 1. The Elixir shell automatically handles those messages and prints them to the terminal.
+```
 
-exit can also be “caught” using try/catch:
+上面的例子中，被连接的进程由于发送了一个带有值1的`exit`信号而结束。Elixir shell会自动处理那些消息并打印在终端上。
 
+`exit`也可以使用`try/catch`来“捕获”：
+
+```elixir
 iex> try do
 ...>   exit "I am exiting"
 ...> catch
 ...>   :exit, _ -> "not really"
 ...> end
 "not really"
-Using try/catch is already uncommon and using it to catch exits is even more rare.
+```
 
-exit signals are an important part of the fault tolerant system provided by the Erlang VM. Processes usually run under supervision trees which are themselves processes that listen to exit signals from the supervised processes. Once an exit signal is received, the supervision strategy kicks in and the supervised process is restarted.
+不过使用`try/catch`是非常少见的，使用它捕获`exit`信号就更加少见了。
 
-It is exactly this supervision system that makes constructs like try/catch and try/rescue so uncommon in Elixir. Instead of rescuing an error, we’d rather “fail fast” since the supervision tree will guarantee our application will go back to a known initial state after the error.
+`exit`信号是Erlang虚拟机提供的容错系统的重要一部分。进程一般运行在监控树中，监控树进程会监听那些被监控进程的`exit`信号。一旦接收到`exit`信号，监控策略会重启被监控进程。
 
-After
+在Elixir中，这种监控系统让`try/catch`和`try/rescue`这种结构变成不常用。我们宁可让进程“立刻失败”，然后监控系统会保证在发生错误之后让我们的应用程序回到一个已知的初始状态上，也不去纠正一个错误。
 
-Sometimes it’s necessary to ensure that a resource is cleaned up after some action that could potentially raise an error. The try/after construct allows you to do that. For example, we can open a file and use an after clause to close it–even if something goes wrong:
+## After
 
+有时，在某些可能引发错误的操作之后，确保资源被清理干净是必要的。`try/after`结构允许你这么做。举个例子，我们可以打开一个文件，然后用一个`after`子句来关闭这个文件，即使打开文件出错也会关闭它：
+
+```elixir
 iex> {:ok, file} = File.open "sample", [:utf8, :write]
 iex> try do
 ...>   IO.write file, "olá"
@@ -163,10 +170,13 @@ iex> try do
 ...>   File.close(file)
 ...> end
 ** (RuntimeError) oops, something went wrong
-The after clause will be executed regardless of whether or not the tried block succeeds. Note, however, that if a linked process exits, this process will exit and the after clause will not get run. Thus after provides only a soft guarantee. Luckily, files in Elixir are also linked to the current processes and therefore they will always get closed if the current process crashes, independent of the after clause. You will find the same to be true for other resources like ETS tables, sockets, ports and more.
+```
 
-Sometimes you may want to wrap the entire body of a function in a try construct, often to guarantee some code will be executed afterwards. In such cases, Elixir allows you to omit the try line:
+不管try块中的代码成功与否，`after`子句都会执行。但是注意，如果有一个连接进程存在，这个进程将退出且`after`子句不会被执行。因此`after`子句在执行上只提供了一个软性保证。幸运的是，Elixir中的文件都被连接到当前进程中，因此在当前进程崩溃的时候文件都能被正确关闭，这是独立于`after`子句存在的机制。你将在其他资源比如ETS表、套接字、端口等资源上看到类似的机制。
 
+有时你可能想将整个函数体包装在try结构内，然后保证在try执行之后一定会执行某些代码。在这种情况下，Elixir允许你省略try这行：
+
+```elixir
 iex> defmodule RunAfter do
 ...>   def without_even_trying do
 ...>     raise "oops"
@@ -177,12 +187,15 @@ iex> defmodule RunAfter do
 iex> RunAfter.without_even_trying
 cleaning up!
 ** (RuntimeError) oops
-Elixir will automatically wrap the function body in a try whenever one of after, rescue or catch is specified.
+```
 
-Else
+Elixir会自动包装函数体到`try`中，不管后面是`after`、`rescue`还是`catch`。
 
-If an else block is present, it will match on the results of the try block whenever the try block finishes without a throw or an error.
+## Else
 
+当出现`else`块时，它会在`try`块正常运行时匹配它的结果。
+
+```elixir
 iex> x = 2
 2
 iex> try do
@@ -197,12 +210,15 @@ iex> try do
 ...>     :large
 ...> end
 :small
-Exceptions in the else block are not caught. If no pattern inside the else block matches, an exception will be raised; this exception is not caught by the current try/catch/rescue/after block.
+```
 
-Variables scope
+`else`块中的异常不会被捕获。如果`else`块没有匹配到任何模式，将抛出一个异常；这个异常将不会被当前的`try/catch/rescue/after`块所捕获。
 
-It is important to bear in mind that variables defined inside try/catch/rescue/after blocks do not leak to the outer context. This is because the try block may fail and as such the variables may never be bound in the first place. In other words, this code is invalid:
+## 变量作用域
 
+需要牢记在心的一个很重要的事情是，定义在`try/catch/rescue/after`块中的变量不会泄露到外部环境中去。这是因为`try`块可能会失败，这会导致后面的变量永远不能被绑定到值。换句话说，下面代码是无效的：
+
+```elixir
 iex> try do
 ...>   raise "fail"
 ...>   what_happened = :did_not_raise
@@ -211,8 +227,11 @@ iex> try do
 ...> end
 iex> what_happened
 ** (RuntimeError) undefined function: what_happened/0
-Instead, you can store the value of the try expression:
+```
 
+相反，你可以把`try`表达式存储到一个变量中：
+
+```elixir
 iex> what_happened =
 ...>   try do
 ...>     raise "fail"
@@ -222,4 +241,6 @@ iex> what_happened =
 ...>   end
 iex> what_happened
 :rescued
-This finishes our introduction to try, catch, and rescue. You will find they are used less frequently in Elixir than in other languages, although they may be handy in some situations where a library or some particular code is not playing “by the rules”.
+```
+
+到这里就结束了对`try`、`catch`和`rescue`的介绍了。你会发现相比于其他语言，它们在Elixir中的使用频率不高，虽然它们可能在一些不规范的库中被使用。
