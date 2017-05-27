@@ -21,3 +21,4 @@
 17. [第十七章 解析](./docs/chapter_17_comprehensions.md)
 18. [第十八章 Sigils](./docs/chapter_18_sigils.md)
 19. [第十九章 try,catch和rescue](./docs/chapter_19_try_catch_and_rescue.md)
+20. [第二十章 类型规格和行为](./docs/chapter_20_typespecs_and_behaviours.md)
