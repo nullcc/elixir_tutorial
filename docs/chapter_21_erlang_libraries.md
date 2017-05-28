@@ -8,7 +8,7 @@
 6.`math`模块
 7.`queue`模块
 8.`rand`模块
-9.`zip`和`zlib`模块
+9.`zip`模块和`zlib`模块
 
 Elixir提供了非常优秀的和Erlang函数库的互操作性。事实上，Elixir不鼓励对Erlang函数库做简单的封装，它鼓励直接使用Erlang代码。在本节中我们将展示一些Erlang最常用的功能，这些功能Elixir中是没有的。
 
@@ -78,12 +78,13 @@ iex> :digraph.get_short_path(digraph, v0, v2)
 
 ## Erlang持久化
 
-The modules ets and dets handle storage of large data structures in memory or on disk respectively.
+`ets`模块和`dets`模块分别处理对大型数据结构的磁盘存储。
 
-ETS lets you create a table containing tuples. By default, ETS tables are protected, which means only the owner process may write to the table but any other process can read. ETS has some functionality to be used as a simple database, a key-value store or as a cache mechanism.
+ETS让你能创建一个包含元组的表格。默认情况下，ETS表是受保护的，这意味着只有拥有它的进程才能对它进行写入，其他进程只能对它进行读取。ETS的某些功能可以被用来当成一个简单的数据库来使用，可以作为一个键-值存储或者一个缓存机制。
 
-The functions in the ets module will modify the state of the table as a side-effect.
+`ets`模块中的函数会修改表格，这是有副作用的。
 
+```elixir
 iex> table = :ets.new(:ets_test, [])
 # Store as tuples with {name, population}
 iex> :ets.insert(table, {"China", 1_374_000_000})
@@ -93,10 +94,13 @@ iex> :ets.i(table)
 <1   > {<<"India">>,1284000000}
 <2   > {<<"USA">>,322000000}
 <3   > {<<"China">>,1374000000}
-The math module
+```
 
-The math module contains common mathematical operations covering trigonometry, exponential, and logarithmic functions.
+## `math`模块
 
+`math`模块包含了常见的数学运算，涵盖三角、指数和对数函数。
+
+```elixir
 iex> angle_45_deg = :math.pi() * 45.0 / 180.0
 iex> :math.sin(angle_45_deg)
 0.7071067811865475
@@ -104,10 +108,13 @@ iex> :math.exp(55.0)
 7.694785265142018e23
 iex> :math.log(7.694785265142018e23)
 55.0
-The queue module
+```
 
-The queue is a data structure that implements (double-ended) FIFO (first-in first-out) queues efficiently:
+## `queue`模块
 
+队列是一个实现了双端FIFO（先进先出）的数据结构：
+
+```elixir
 iex> q = :queue.new
 iex> q = :queue.in("A", q)
 iex> q = :queue.in("B", q)
@@ -120,10 +127,13 @@ iex> value
 iex> {value, q} = :queue.out(q)
 iex> value
 :empty
-The rand module
+```
 
-rand has functions for returning random values and setting the random seed.
+## `rand`模块
 
+rand模块中包含了返回随机值和随机种子的函数。
+
+```elixir
 iex> :rand.uniform()
 0.8175669086010815
 iex> _ = :rand.seed(:exs1024, {123, 123534, 345345})
@@ -131,16 +141,22 @@ iex> :rand.uniform()
 0.5820506340260994
 iex> :rand.uniform(6)
 6
-The zip and zlib modules
+```
 
-The zip module lets you read and write ZIP files to and from disk or memory, as well as extracting file information.
+## `zip`模块和`zlib`模块
 
-This code counts the number of files in a ZIP file:
+`zip`模块让你可以从磁盘或内存中读取和写入ZIP文件，以及提取文件信息。
 
+下列代码计算一个ZIP文件中包含多少个文件：
+
+```elixir
 iex> :zip.foldl(fn _, _, _, acc -> acc + 1 end, 0, :binary.bin_to_list("file.zip"))
 {:ok, 633}
-The zlib module deals with data compression in zlib format, as found in the gzip command.
+```
 
+`zlib`模块以zlib格式处理压缩的数据，`gzip`命令就是使用这种格式。
+
+```elixir
 iex> song = "
 ...> Mary had a little lamb,
 ...> His fleece was white as snow,
@@ -153,3 +169,4 @@ iex> byte_size compressed
 99
 iex> :zlib.uncompress(compressed)
 "\nMary had a little lamb,\nHis fleece was white as snow,\nAnd everywhere that Mary went,\nThe lamb was sure to go."
+```
