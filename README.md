@@ -23,3 +23,4 @@
 19. [第十九章 try,catch和rescue](./docs/chapter_19_try_catch_and_rescue.md)
 20. [第二十章 类型规格和行为](./docs/chapter_20_typespecs_and_behaviours.md)
 21. [第二十一章 Erlang函数库](./docs/chapter_21_erlang_libraries.md)
+22. [第二十二章 接下来的学习路径](./docs/chapter_22_where_to_go_next.md)
